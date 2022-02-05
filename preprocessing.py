@@ -4,7 +4,7 @@ import numpy as np
 import _pickle as cPickle
 from typing import List
 import os
-
+import random
 
 class Preprocessor():
     def __init__(self, curr_exp, curr_run, cfg) -> None:
@@ -13,7 +13,7 @@ class Preprocessor():
         self.exp = curr_exp
         self.run = curr_run
         self.path = os.path.join(data_cfg["path"], f"Exp_{self.exp}_run_{self.run}_6D.tsv")
-        self.save_dir = data_cfg["save_dir"]
+        self.save_dir = os.path.join(data_cfg["save_dir"], "raw")
         
         self.res_rule = params_cfg["resample_rule"]
         self.avg_window = params_cfg["average_window"]
@@ -216,5 +216,59 @@ class Preprocessor():
         
         
         
+class Splitter():
+    def __init__(self, cfg) -> None:
+        split_cfg = cfg["split"]
+        self.saved_dir = os.path.join(cfg["data"]["save_dir"], "raw")
+        self.save_dir = split_cfg["save_dir"]
+        self.train_ratio = split_cfg["train_ratio"]
+        self.val_ratio = split_cfg["val_ratio"]
+        self.test_set = split_cfg["test_set"]
+        if not self.test_set:
+            self.sets = ["train", "val"]
+            assert self.train_ratio + self.val_ratio == 1, "train_ratio and val_ratio should sum up to 1"
+        else:
+            self.sets = ["train", "val", "test"]
+            assert self.train_ratio + self.val_ratio <= 0.90, "a test set should be at lest 0.10 of your data"
+            
+    def split(self):
+        
+        files = os.listdir(self.saved_dir)
+        all_trajs = []
+        for f in files:
+            path = os.path.join(self.saved_dir, f)
+            with open(path, "rb") as f:
+                trajectories = cPickle.load(f)
+            all_trajs.extend(trajectories)
+        random.Random(1).shuffle(all_trajs)
+        full_set_len = len(all_trajs)
+        n_train_trajs = int(self.train_ratio * full_set_len)
+        n_val_trajs =  int(self.val_ratio * full_set_len)
+        train_set = all_trajs[:n_train_trajs]
+        dataset = {}
+        dataset["train"] = train_set
+        
+        if self.test_set:
+            val_set = all_trajs[n_train_trajs : n_train_trajs + n_val_trajs]
+            test_set = all_trajs[n_train_trajs + n_val_trajs:]
+            assert len(train_set) + len(val_set) + len(test_set) == full_set_len, "You are not using all trajectories"
+            dataset["val"] = val_set
+            dataset["test"] = test_set
+        else:
+            val_set = all_trajs[n_train_trajs :]
+            assert len(train_set) + len(val_set) == full_set_len, "You are not using all trajectories"
+            dataset["val"] = val_set
+            
+        if not os.path.exists(self.save_dir):
+            print("Save dir doesn't exist. Creating save dir...")
+            os.makedirs(self.save_dir)
+        
+        for ns, set_ in dataset.items():
+            print(f"Saving {ns} set with {len(set_)} trajectories")
+            with open(os.path.join(self.save_dir, ns + "pkl"), "wb") as f:
+                cPickle.dump(set_, f)
+
         
         
+        
+    

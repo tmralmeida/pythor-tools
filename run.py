@@ -1,4 +1,3 @@
-import os
 import yaml
 from argparse import ArgumentParser
 from .preprocessing import Preprocessor
@@ -35,3 +34,4 @@ for er in exp_run:
 
 print(f"Preprocessed a total amount of {sum(total_nst)} trajectories.")
 
+# split into three different sets

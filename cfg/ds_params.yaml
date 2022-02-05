@@ -3,7 +3,7 @@ data :
   experiments : [1, 2, 3]
   runs : [4, 5, 4]
   path : "/home/tmr/Documents/PhD/My_PhD/code/datasets/thor/tsvs/"
-  save_dir : "/home/tmr/Documents/PhD/My_PhD/code/human-traj-scgan/data/thor/raw"
+  save_dir : "/home/tmr/Documents/PhD/My_PhD/code/pythor-tools/data/" # preprocessing stage
 
 parameters : 
   resample_rule : 100ms # downsampling time
@@ -11,3 +11,8 @@ parameters :
   obs_len : 20 # observation length
   pred_len : 30 # prediction length
   
+split : 
+  train_ratio : 0.70
+  val_ratio : 0.15
+  test_set : True
+  save_dir : "/home/tmr/Documents/PhD/My_PhD/code/human-traj-scgan/data/thor/raw" # train set, val set and test set
