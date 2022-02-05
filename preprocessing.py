@@ -265,7 +265,7 @@ class Splitter():
         
         for ns, set_ in dataset.items():
             print(f"Saving {ns} set with {len(set_)} trajectories")
-            with open(os.path.join(self.save_dir, ns + "pkl"), "wb") as f:
+            with open(os.path.join(self.save_dir, ns + ".pkl"), "wb") as f:
                 cPickle.dump(set_, f)
 
         
