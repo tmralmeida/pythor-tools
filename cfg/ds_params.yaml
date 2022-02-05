@@ -1,7 +1,7 @@
 
 data : 
-  experiment : 1
-  run : 1
+  experiments : [1, 2, 3]
+  runs : [4, 5, 4]
   path : "/home/tmr/Documents/PhD/My_PhD/code/datasets/thor/tsvs/"
   save_dir : "/home/tmr/Documents/PhD/My_PhD/code/human-traj-scgan/data/thor/raw"
 
@@ -9,5 +9,5 @@ parameters :
   resample_rule : 100ms # downsampling time
   average_window : 500ms # moving average filter's window
   obs_len : 20 # observation length
-  pred_len : 50 # prediction length
+  pred_len : 30 # prediction length
   
