@@ -123,7 +123,7 @@ class Preprocessor():
         roles = {
             "VISITOR" : visitors_group1 + visitors_group2 if n_groups == 2 else visitors_group1 + visitors_group2 + visitors_group3,
             "WORKER" : workers_lab + workers_utility,
-            "inspector" : inspector,
+            "INSPECTOR" : inspector,
         }
         return roles
     
