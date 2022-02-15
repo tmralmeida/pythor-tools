@@ -150,7 +150,7 @@ class Preprocessor():
                 df_average = df_targ.copy()
                 df_average.loc[:, "Time"] = time_col
                 df_average["date"] = pd.TimedeltaIndex(time_col, unit = "s")
-                df_average = df_average.rolling("500ms", on = "date").mean()
+                df_average = df_average.rolling(self.avg_window, on = "date").mean()
                 df_average.loc[:, "Frame"] = np.arange(1, df_average.shape[0] + 1)
                 for idx_d, r in enumerate(roles.values()):
                     if helmet_n in r:
@@ -158,12 +158,12 @@ class Preprocessor():
                 df_final =  df_average.assign(Description = list(roles.keys())[idx_dict])
                 df_final =  df_final.assign(Person_ID = helmet_n)
                 
-                df_final = df_final[["Frame", "Time", "Person_ID", "X", "Y", "Description"]]
+                df_final = df_final[["Frame", "Time", "Person_ID", "X", "Y", "Description"]].dropna()
                 dfs_helmets.append(df_final)
             prev_col_name = column
         # concatenating and ordering
         df_concatenated = pd.concat(dfs_helmets)
-        df_sorted = df_concatenated.sort_values(by=["Frame", "Person_ID"]).dropna().reset_index(drop=True)
+        df_sorted = df_concatenated.sort_values(by=["Frame", "Person_ID"]).reset_index(drop=True)
         return df_sorted
     
     
@@ -191,7 +191,7 @@ class Preprocessor():
         
         # resampling
         no_frame = merged_df.drop("Frame", axis = 1)
-        no_frame_resampled = no_frame.resample(rule=self.res_rule, on = "date").mean()
+        no_frame_resampled = no_frame.resample(rule=self.res_rule, on = "date").first()
         
         # splitting helmets and ordering
         ordered_df = self.__splitting_helms(no_frame_resampled)
