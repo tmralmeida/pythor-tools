@@ -15,4 +15,4 @@ split :
   train_ratio : 0.70
   val_ratio : 0.15
   test_set : True
-  save_dir : "/home/tmr/Documents/PhD/My_PhD/code/human-traj-scgan/data/thor/raw2" # train set, val set and test set
+  save_dir : "/home/tmr/Documents/PhD/My_PhD/code/motion-pred-scgan/data/thor/raw" # train set, val set and test set
