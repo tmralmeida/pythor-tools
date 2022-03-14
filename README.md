@@ -11,5 +11,5 @@ python -m pythor-tools.run
 Finally, creating training, validation, and test sets:
 
 ```
-python -m pythor-tools.run
+python -m pythor-tools.split_sets
 ```
