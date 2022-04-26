@@ -34,4 +34,3 @@ for er in exp_run:
 
 print(f"Preprocessed a total amount of {sum(total_nst)} trajectories.")
 
-# split into three different sets
