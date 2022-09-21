@@ -1,29 +1,30 @@
 # pythor-tools
-Tools to handle THOR dataset.
+
+Tools to preprocess THÖR dataset used in Context-free Self-Conditioned GAN for Trajectory Forecasting.
+
+## Installation
+
+Install [miniconda](http://docs.conda.io/en/latest/miniconda.html). Then, you can install all packages required by running:
+
+```
+conda env create -f environment.yml
+```
 
 
-## Current status
-
-* [x] Filtering/Splitting
-* [ ] Visualization
-* [ ] Statistics
-  * [ ] # overal samples, # samples per class
-  * **smoothed spline fit distances:**
-  * [ ] $\sigma_{x,spline}[m]$, $\sigma_{y,spline}[m]$ [RED eval](https://openaccess.thecvf.com/content_ECCVW_2018/papers/11131/Becker_RED_A_simple_but_effective_Baseline_Predictor_for_the_TrajNet_ECCVW_2018_paper.pdf) 
-  * [ ] $R^2_x$, $R^2_y$
-  * [ ] Turtuosity, etc. [Undestanding](https://link.springer.com/content/pdf/10.1007/s10109-021-00370-6.pdf)
+Then, you need to download the raw THÖR dataset from [Zenodo repository](https://zenodo.org/record/3382145#.YxcPhdJBzmE).
 
 ## Filtering and splitting
 
-First, set the config file. Then, run:
+Firstly, set the [config file](https://github.com/tmralmeida/pythor-tools/blob/main/cfg/ds_params.yaml). Then, run:
 
 ```
 python -m pythor-tools.run
 ```
 
-Finally, creating training, validation, and test sets:
+Secondly, creating training, validation, and test sets:
 
 ```
 python -m pythor-tools.split_sets
 ```
 
+In the end, you will have one `output` folder containing the preprocessed files and the respective training, validation, and test sets.
